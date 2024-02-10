@@ -5,6 +5,16 @@
 
             include("connessione.php");
 
+
+            function Visualizza($f_conn, $f_switch){ //estrae da "operatori" o "cittadini"
+                // --->  a seconda della variabile $f_switch  --->  cambiata dal radiobutton"scelta"
+                $sql="SELECT * FROM ".$f_switch.""; 
+                
+                $res = $f_conn->query($sql);
+
+                return $res;
+            }
+
         ?>
 
     <title>Interfaccia</title>
@@ -18,7 +28,7 @@
 
                             <!--
                             <div class="container">
-                                <div class="sidebar">
+                                <div class="sid ebar">
                                     <h2>Ricerca</h2>
                                     <form>
                                         <label for="searchName">Nome:</label>
