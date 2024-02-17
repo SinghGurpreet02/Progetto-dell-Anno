@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "root";
+$password = "root"; 
 $dbname = "progetto_anno";
 
 // Connessione al database
