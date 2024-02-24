@@ -34,19 +34,26 @@
             width: 100%;
         }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
         select {
             width: 50%;
             margin-top: 10px;
         }
     </style>
 </head>
-<body>
+<body action="Ricerca.php" method="$POST">
+
+    
+    
+    <?php
+        echo" <label for='Ricerca'>Mostra i dati degli:</label> 
+        <select id='Filtro' name='Filtro' style='height: 30px'> 
+            <option value='1'>Operatori</option> 
+            <option value='2'>Cittadini</option>
+        </select> ";
+        
+        
+        
+    ?>
 
     <nav>
         <a href="#">Home</a>
@@ -58,22 +65,25 @@
         <div class="divider divider-2"></div>
         <table>
             <thead>
-                <tr>
-                    <th></th>
-                    
-                    <th>ID_Operatore</th>
-                    <th>Nome</th>
-                    <th>Cognome</th>
-                    <th>id_corpo</th>
-                </tr>
+            <?php //stampa campi tabella inziali e dati rispettivi
+                echo "
+                <table>
+                    <tr>
+                        <th class='item-cerchiato'>Seleziona</th>
+                        <th class='item-cerchiato'>Nome</th>
+                        <th class='item-cerchiato'>Cognome</th>
+                        <th class='item-cerchiato'>Email</th>
+                        <th class='item-cerchiato'>Telefono</th>
+                    </tr>";
+            ?>
             </thead>
             <tbody>
                 <tr>
                     <td><input type="checkbox"></td>
-                    <td>Mario</td>
-                    <td>Rossi</td>
-                    <td>01/01/1990</td>
-                    <td>ABC123456789</td>
+                    <td class='item-cerchiato'>Mario</td>
+                    <td class='item-cerchiato'>Rossi</td>
+                    <td class='item-cerchiato'>01/01/1990</td>
+                    <td class='item-cerchiato'>ABC123456789</td>
                 </tr>
             </tbody>
         </table>
@@ -90,11 +100,6 @@
         <br><br>
         <input type="button" class="ricerca" id= "cerca" value="Cerca" style="height: 25px">
     </div>
-
-
-     
-
-
 
 </body>
 </html>

@@ -16,18 +16,12 @@
         border-collapse: collapse;
         width: 80%;
         margin: 20px auto;
+		border: 2px solid gray
     }
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
+    .item-cerchiato {
+        border: 1px solid black;
+      }
 
     .container {
         position: relative;
@@ -41,28 +35,4 @@
         height: 100%;
       }
       
-      .divider-1 {
-        width: 20%;
-        background-color: #ccc;
-        right: 100%;
-        animation: divider-animation 3s forwards;
-      }
-      
-      .divider-2 {
-        width: 30%;
-        background-color: #ddd;
-        right: 100%;
-        animation: divider-animation 2s 1s forwards;
-      }
-      
-      .divider-3 {
-        width: 40%;
-        background-color: #eee;
-        right: 100%;
-        animation: divider-animation 1s 2s forwards;
-      }
-      
-      @keyframes divider-animation {
-        0% { right: 100%; }
-        100% { right: 0; }
-      }
+
