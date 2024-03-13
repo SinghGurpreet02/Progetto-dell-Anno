@@ -6,7 +6,7 @@ function RichiamaFunzionePhp(dir_funzione, nome_funzione, parametro) {
         url: dir_funzione,
         type: 'POST',
         data: { 
-        action: nome_funzione, 
+        aggiorna: nome_funzione, 
         param: parametro
         },
         success: function(success) {
@@ -25,5 +25,5 @@ function RichiamaFunzionePhp(dir_funzione, nome_funzione, parametro) {
 function VisualizzaUtenza(){
     var utenza = document.getElementById("utenza");
     
-    RichiamaFunzionePhp("Ricerca.php", "visualizza", utenza.value);
+    RichiamaFunzionePhp("Ricerca.php", "aggiorna", utenza.value);
 }

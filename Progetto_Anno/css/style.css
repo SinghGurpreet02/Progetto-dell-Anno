@@ -57,10 +57,9 @@
     }
 
     .vertical-divider {
-        border-left: 1px solid #ccc; /* Colore e spessore del divisore */
+        border-left: 1px solid #ff0000; /* Colore e spessore del divisore */
         height: 100px; /* Altezza del divisore */
         margin: 20px; /* Spaziatura attorno al divisore */
         padding-left: 20px; /* Spaziatura interna del divisore per il testo */
+        display: inline-block;
     }
-
-  

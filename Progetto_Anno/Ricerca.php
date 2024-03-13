@@ -1,3 +1,22 @@
+<?php
+      // URL del web service per la lettura dei libri
+      $url_cittadino = "http://localhost/Progetto_Anno/cittadini/read.php"; //uguale all'url verificato su POSTMAN
+      $url_operatore = "http://localhost/Progetto_Anno/operatori/read.php";
+      
+      // Invio Richiesta al web service e salvataggio del risultato nella variabile $response 
+      $response_cittadino = file_get_contents($url_cittadino);
+      $response_operatore = file_get_contents($url_operatore);
+      
+      // Decodifica del JSON
+      $data_cittadino = json_decode($response_cittadino, true);    
+      $data_operatore= json_decode($response_operatore, true);
+      
+      // Controllo del successo della richiesta
+      if ($data_cittadino === false || $data_operatore == false) {
+        echo "Errore durante la chiamata al web service";
+      }  
+?>
+
 <!DOCTYPE html>
 <head>  
     <link rel="stylesheet" href="css/style.css">
@@ -8,7 +27,7 @@
     <?php //inclusioni di file esterni
         include("connessione.php");
 
-        function mostraAlertHTML() { //----------------------------------------------------------------------
+        function mostraAlertHTML() { //------------------------------------------------
             echo "<script>alert();</script>";
         }
 
@@ -27,7 +46,7 @@
         <a href="#" onclick=alert()>Home</a> <!-- aggiornare  -->
         <a href="#">Ricerca</a> <!-- aggiornare  -->
     </nav>
-    <div class="vertical-divider-left">
+    <div class="vertical-divider">
         <?php
             
             echo" <label for='Ricerca'>Mostra i dati degli:</label> 
@@ -36,11 +55,10 @@
                 <option value='2'>Cittadini</option>    
             </select> ";
     
-
-            //-------------------------------------------- cambio dinamico dato da <select> sopra, non funziona l'ajax nello script... -----------------------
-            if(isset($_POST['action']) && !empty($_POST['action'])) {
+            //-------------------------------------------- cambio dinamico dato da <select> sopra, ajax funziona, -----------------------
+            if(isset($_POST['aggiorna'])) {
                 mostraAlertHTML();
-                $action = $_POST['action'];
+                $action = $_POST['aggiorna'];
                 if($action=='Operatori' || $action=='Cittadini'){
                     echo"<button>piseelonero</button>";
                     $param = $_POST['param'];
@@ -62,6 +80,7 @@
             <input type="button" class="ricerca" id= "cerca" value="Cerca" style="height: 25px">
     </div>
 
+    <div class="vertical-divider">
     <table>
             <?php //stampa campi tabella inziali e dati rispettivi
                 echo "
@@ -82,5 +101,6 @@
                 </tr>";
                 ?>
         </table>
+    </div>
 </body>
 </html>
