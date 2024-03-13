@@ -18,7 +18,7 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require_once("../inc/database.inc.php");
-require_once("../models/cittadino.php");
+require_once("../models/operatore.php");
 require_once("../inc/sanitize.inc.php");
 require_once("../inc/responsemessage.inc.php");
 require_once("../inc/tokenvalidator.inc.php"); // OPZIONALE per rispondere solo ad utenti autenticati con token
@@ -26,28 +26,28 @@ require_once("../inc/tokenvalidator.inc.php"); // OPZIONALE per rispondere solo 
 $database = new Database();
 $db = $database->getConnection();
 
-// Il Tokenvalidator è necessario solo quando il servizio risponde ad utenti autenticati 
+// Il TokenValidator ID_operatori è necessario solo quando il servizio risponde ad utenti autenticati 
 if($database->GetAuthenticated() && !Tokenvalidator($conn,$user)){
 	http_response_code(401);
 	exit;
 }
 
-if(isset($_GET['ID_cittadino'])) // Recupero l'ID_cittadini dalla querystring
+if(isset($_GET['ID_operatore'])) // Recupero l'ID_operatori dalla querystring
 {
-	$cittadini = new Cittadini($db);
-	$cittadini->ID_cittadino = $_GET['ID_cittadino'];
+	$operatori = new Operatori($db);
+	$operatori->ID_operatore = $_GET['ID_operatore'];
 
-	if($cittadini->delete()){
+	if($operatori->delete()){
 		http_response_code(200); // OK (https://it.wikipedia.org/wiki/Codici_di_stato_HTTP)
-		$rspMsg = new Responsemessage("cittadino eliminato correttamente", $cittadini->ID_cittadino); 
+		$rspMsg = new Responsemessage("Operatore eliminato correttamente", $operatori->ID_operatore); 
 	} else {
 		http_response_code(503); //503 service unavailable
-		$rspMsg = new Responsemessage("Impossibile eliminare il cittadino", -1); 
+		$rspMsg = new Responsemessage("Impossibile eliminare l'operatore", -1); 
 	}
 } else {
 	http_response_code(503); //503 service unavailable
-	$rspMsg = new Responsemessage("ID_cittadino non indicato", -1); 
+	$rspMsg = new Responsemessage("ID_operatore non indicato", -1); 
 }
 
-echo json_encode($rspMsg); // in alternativa echo json_encode(array("message" => "Testo del messaggio"));
+echo json_encode($rspMsg); 
 ?>

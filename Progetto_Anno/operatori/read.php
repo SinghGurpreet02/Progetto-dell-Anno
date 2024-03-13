@@ -2,7 +2,7 @@
 /* --- SELECT DI TUTTI GLI OGGETTI O DI UNO SPECIFICATO MEDIANTE CHIAVE ---
 
 Posso richiamare questo servizio con un qls browser o da Postman:
-http://localhost/webservice/cittadini/read.php
+http://localhost/webservice/operatori/read.php
 */
 
 // TODO: Utili in fase di debug, da rimuovere nel deploy
@@ -16,7 +16,7 @@ header("Content-Type: application/json; charset=UTF-8"); 	// Indica che il forma
 header("Access-Control-Allow-Methods: GET"); 				// Non è necessario specificare il metodo GET perchè se non indicato viene preso di default
 
 require_once("../inc/database.inc.php");
-require_once("../models/cittadino.php");
+require_once("../models/operatore.php");
 require_once("../inc/sanitize.inc.php");
 require_once("../inc/responsemessage.inc.php");
 require_once("../inc/tokenvalidator.inc.php"); // OPZIONALE per rispondere solo ad utenti autenticati con token
@@ -30,16 +30,16 @@ if($database->GetAuthenticated() && !Tokenvalidator($conn,$user)){
 	exit;
 }
 
-$cittadini = new Cittadini($db); 	// Passo la connessione alla classe cittadini
+$operatori = new Operatori($db); 	// Passo la connessione alla classe operatori
 
-if(isset($_GET['ID_cittadino']))	// Passare in GET (querystring) la chiave (se POST vedere file search.php)
-	$result = $cittadini->read($_GET['ID_cittadino']);
+if(isset($_GET['ID_operatore']))	// Passare in GET (querystring) la chiave (se POST vedere file search.php)
+	$result = $operatori->read($_GET['ID_operatore']);
 else
-	$result = $cittadini->read();
+	$result = $operatori->read();
 
 if($result->num_rows == 0){
     http_response_code(204);	// No content
-    $rspMsg = new Responsemessage("Nessun cittadini trovato in Biblioteca", -1); 
+    $rspMsg = new Responsemessage("Nessun operatori trovato in Progetto_dell'anno", -1); 
 	echo json_encode($rspMsg); 	// in alternativa echo json_encode(array("message" => "Testo del messaggio"));
     exit;
 }
@@ -48,11 +48,10 @@ $items = array();
 
 while($obj = $result->fetch_object()) {
 	$item = array(
-		"ID_cittadino" => $obj->ID_cittadino,
+		"ID_operatore" => $obj->ID_operatore,
 		"nome" => $obj->nome,
 		"cognome" => $obj->cognome,
-		"email" => $obj->email,
-		"telefono" => $obj->telefono
+		"id_corpo" => $obj->id_corpo
 	);
 	
 	array_push($items, $item); 	// Aggiungo al vettore 

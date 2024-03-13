@@ -13,7 +13,7 @@ class Cittadini
     private $nome_tabella = "cittadini";
 
     //Attributi
-    public $ID_cittadini;
+    public $ID_cittadino;
     public $nome;
     public $cognome;
     public $email;
@@ -83,7 +83,7 @@ class Cittadini
 		
 		// execute query
 		if($stmt->execute()){
-			$this->ID_cittadini = $this->connesione->insert_id;
+			$this->ID_cittadino = $this->connesione->insert_id;
 			return true;
 		}
 		
@@ -93,7 +93,7 @@ class Cittadini
 	// --- AGGIORNARE OGGETTO ---
 	function update()
 	{
-		$query = "UPDATE " . $this->nome_tabella . " SET nome = ?, cognome = ?, email = ?, telefono = ?,WHERE ID_cittadini = ?";
+		$query = "UPDATE " . $this->nome_tabella . " SET nome = ?, cognome = ?, email = ?, telefono = ? WHERE ID_cittadino = ?";
 		
 		$stmt = $this->connesione->prepare($query);
 		
@@ -102,10 +102,10 @@ class Cittadini
 		$this->cognome = sanitize($this->cognome, $this->connesione, true);
 		$this->email = sanitize($this->email, $this->connesione, true);
 		$this->telefono = sanitize($this->telefono, $this->connesione, true);
-		$this->ID_cittadini = sanitize($this->ID_cittadini, $this->connesione, true);
+		$this->ID_cittadino = sanitize($this->ID_cittadino, $this->connesione, true);
 		
 		// binding (tipi di bind  i = int, d = float, s = string, b = blob)
-		$stmt->bind_param("sssii", $this->nome, $this->cognome, $this->email, $this->telefono, $this->ID_cittadini);
+		$stmt->bind_param("sssii", $this->nome, $this->cognome, $this->email, $this->telefono, $this->ID_cittadino);
 				
 		// execute the query
 		if($stmt->execute()){
@@ -119,15 +119,15 @@ class Cittadini
 	function delete()
 	{
 		// Qui si usa il question mark placeholders binding (?)
-		$query = "DELETE FROM " . $this->nome_tabella . " WHERE ID_cittadini = ?";
+		$query = "DELETE FROM " . $this->nome_tabella . " WHERE ID_cittadino = ?";
 		
 		$stmt = $this->connesione->prepare($query);
 		
 		// sanitize
-		$this->ID_cittadini = sanitize($this->ID_cittadini, $this->connesione, true);
+		$this->ID_cittadino = sanitize($this->ID_cittadino, $this->connesione, true);
 		
 		// binding (tipi di bind  i = int, d = float, s = string, b = blob)
-		$stmt->bind_param("i", $this->ID_cittadini);
+		$stmt->bind_param("i", $this->ID_cittadino);
 		
 		// execute query
 		if($stmt->execute()){ 

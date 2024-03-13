@@ -89,8 +89,9 @@ class Operatori
 	// --- AGGIORNARE OGGETTO ---
 	function update()
 	{
-		$query = "UPDATE " . $this->nome_tabella . " SET nome = ?, cognome = ?, id_corpo = ?, WHERE ID_operatore = ?";
-		
+		$query = "UPDATE " . $this->nome_tabella . " SET nome = ?, cognome = ?, id_corpo = ? WHERE ID_operatore = ?";
+		//var_dump($query);
+		//exit;
 		$stmt = $this->connesione->prepare($query);
 		
 		// sanitize

@@ -4,9 +4,14 @@
 Posso richiamare questo servizio soltanto da Postman:
 1. impostare il metodo HTTP PUT
 2. immettere l'URL della richiesta
-3. selezionare il body per immettere i dati del cittadini
+3. selezionare il body per immettere i dati del operatori
 4. selezionare raw
-5. inserire il JSON singh merda ciucciacelo ---  -- - - -- - -- - -.- - - - - -- 
+5. inserire il JSON seguente:
+{
+    "ISBN" : "00000020dd02",
+    "Titolo" : "Kafka sulla battigia",
+    "Autore" : "Murakami Haruki"
+}
 */
 
 // TODO: Utili in fase di debug, da rimuovere nel deploy
@@ -21,7 +26,7 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require_once("../inc/database.inc.php");
-require_once("../models/cittadino.php");
+require_once("../models/operatore.php");
 require_once("../inc/sanitize.inc.php");
 require_once("../inc/responsemessage.inc.php");
 require_once("../inc/tokenvalidator.inc.php"); // OPZIONALE per rispondere solo ad utenti autenticati con token
@@ -35,25 +40,22 @@ if($database->GetAuthenticated() && !Tokenvalidator($conn,$user)){
 	exit;
 }
 
-$data = json_decode(file_get_contents("php://input")); // In alternativa si potrebbe utilizzare $oggetto = JsonParser($temp->object,$cittadini);
+$data = json_decode(file_get_contents("php://input")); // In alternativa si potrebbe utilizzare $oggetto = JsonParser($temp->object,$operatori);
 
-$cittadini = new Cittadini($db); 	// Passo la connessione alla classe cittadini
+$operatori = new Operatori($db); 	// Passo la connessione alla classe operatori
 
-$cittadini->ID_cittadino = $data->ID_cittadino; 	// TODO: aggiungere controlli sui campi obbligatori
-$cittadini->nome = $data->nome;						// ATTENZIONE a maiuscole
-$cittadini->cognome = $data->cognome;
-$cittadini->email = $data->email;
-$cittadini->telefono = $data->telefono;
+$operatori->ID_operatore = $data->ID_operatore; 	// TODO: aggiungere controlli sui campi obbligatori
+$operatori->nome = $data->nome;						// ATTENZIONE a maiuscole
+$operatori->cognome = $data->cognome;
+$operatori->id_corpo = $data->id_corpo;
 
-
-
-if($cittadini->update()){
+if($operatori->update()){
 	http_response_code(200); // OK (https://it.wikipedia.org/wiki/Codici_di_stato_HTTP)
-	$rspMsg = new Responsemessage("cittadini aggiornato correttamente", $cittadini->ID_cittadino); 
+	$rspMsg = new Responsemessage("operatore aggiornato correttamente", $operatori->ID_operatore); 
 } else {
 	http_response_code(503); //503 service unavailable
-	$rspMsg = new Responsemessage("Impossibile aggiornare il cittadini", -1); 
+	$rspMsg = new Responsemessage("Impossibile aggiornare l'operatore", -1); 
 }
 
-echo json_encode($rspMsg); // in alternativa echo json_encode(array("message" => "Testo del messaggio"));
+echo json_encode($rspMsg);
 ?>
