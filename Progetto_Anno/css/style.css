@@ -20,20 +20,23 @@
         margin: 0 10px;
     }
 
-    .container 
+    .table-container 
     {
-        position: flex;
-        width: 100%;
-        height: 200px;
-        background-color: #f2f2f2;
+        margin: auto;
+    }
+
+    container 
+    {
+        display: flex;
+        height: 100vh;
     }
 
     table 
     {
-        height: min-content;
-        margin: auto;
-        width: 60%;
         border-collapse: collapse;
+        width: 80%;
+        margin-top: 20px;
+        width: 60%;
     }
     
     th, td
@@ -58,8 +61,7 @@
 
     .vertical-divider {
         border-left: 1px solid #ff0000; /* Colore e spessore del divisore */
-        height: 100px; /* Altezza del divisore */
-        margin: 20px; /* Spaziatura attorno al divisore */
-        padding-left: 20px; /* Spaziatura interna del divisore per il testo */
         display: inline-block;
+        width: 1px;
+        margin: auto 20px;
     }

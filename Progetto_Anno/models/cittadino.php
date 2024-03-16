@@ -48,20 +48,34 @@ class Cittadini
 		// Primo parametro valore da ripulire, Secondo parametro connessione al DB, Terzo parametro per rimuovere TAG HTML
 		$this->nome = sanitize($this->nome, $this->connesione, true);
 		$this->cognome = sanitize($this->cognome, $this->connesione, true);
-		$this->email = sanitize($this->email, $this->connesione, true);
-		$this->telefono = sanitize($this->telefono, $this->connesione, true);
 		
 		$nome = '%'.$this->nome.'%';
 		$cognome = '%'.$this->cognome.'%';
-		$email = '%'.$this->email.'%';
-        $telefono = '%'.$this->telefono.'%';
 
-		$query = "SELECT * FROM " . $this->nome_tabella . " AS a; "; // select all
 
-		$stmt = $this->connesione->prepare($query);
-		//$stmt->bind_param("sss", $isbn, $titolo, $autore);
-		if ($stmt->execute() === TRUE) 	// execute query
+		if(!is_null($nome))
+		{
+			
+			$query = "SELECT * FROM " . $this->nome_tabella . " AS a WHERE nome like ?;"; // select all
+
+			//$stmt->bind_param("ss", $nome, $cognome);
+			$stmt = $this->connesione->prepare($query);
+			$stmt->bind_param("s", $this->nome);
+		}
+		else if(!is_null($cognome))
+		{
+			$query = "SELECT * FROM " . $this->nome_tabella . " AS a WHERE cognome like ?;"; // select all
+
+			//$stmt->bind_param("ss", $nome, $cognome);
+			$stmt = $this->connesione->prepare($query);
+			$stmt->bind_param("s", $this->cognome);
+		}
+		
+
+		if ($stmt->execute() === TRUE){ 	// execute query
 			$res = $stmt->get_result(); // restituzione dei risultati
+			return $res;
+		}
 		$stmt->close(); 	// chiude statement
 	}
 	// --- CREARE OGGETTO ---

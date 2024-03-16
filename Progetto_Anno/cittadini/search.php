@@ -43,14 +43,22 @@ $cittadini = new Cittadini($db); 	// Passo la connessione alla classe cittadini
 
 $data = json_decode(file_get_contents("php://input")); // Takes raw data from the request
 
-if(!empty($data->nome))
-	$result = $cittadini->search($data->nome);
-	echo $cittadini->search($data->nome);
-	exit;
+$cittadini->nome = $data->nome;			// ATTENZIONE a maiuscole
+$cittadini->cognome = $data->cognome;
+
+if(!empty($data->nome)){
+
+	if($cittadini->search())
+	{
+		$result = $cittadini->search();
+		
+	}
+
 	if($result === FALSE)
 	{
 		http_response_code(204);
 	}
+}
 else
 	$result = $cittadini->read(); // Ritorno l'elenco completo
 	
@@ -65,7 +73,7 @@ $items = array();
 
 while($obj = $result->fetch_object()) {
 	$item = array(
-		"ID_cittadini" => $obj->ID_cittadini,
+		"ID_cittadino" => $obj->ID_cittadinos,
 		"nome" => $obj->nome,
 		"cognome" => $obj->cognome,
 		"email" => $obj->email,

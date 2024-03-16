@@ -30,23 +30,16 @@
         function mostraAlertHTML() { //------------------------------------------------
             echo "<script>alert();</script>";
         }
-
-        function Visualizza($utenza){ //estrae da "operatori" o "cittadini"
-            // --->  a seconda della variabile $utenza  --->  cambiata dal radiobutton"scelta"
-            if(isset($utenza))
-            {echo"<button>pisello</button>";} //.--------------------------------------------------
-        }
-
     ?>
 
     <title>Interfaccia</title>
 </head>
 <body action="Ricerca.php" method="$POST">
     <nav class="nav">
+    <div class="vertical-divider">
         <a href="#" onclick=alert()>Home</a> <!-- aggiornare  -->
         <a href="#">Ricerca</a> <!-- aggiornare  -->
     </nav>
-    <div class="vertical-divider">
         <?php
             
             echo" <label for='Ricerca'>Mostra i dati degli:</label> 
@@ -55,7 +48,8 @@
                 <option value='2'>Cittadini</option>    
             </select> ";
     
-            //-------------------------------------------- cambio dinamico dato da <select> sopra, ajax funziona, -----------------------
+
+            /*-------------------------------------------- cambio dinamico dato da <select> sopra, ajax funziona, -----------------------
             if(isset($_POST['aggiorna'])) {
                 mostraAlertHTML();
                 $action = $_POST['aggiorna'];
@@ -66,9 +60,9 @@
                     Visualizza($param);
                 }
             }
+            */
         ?>
         <br><br>
-
             <label for="Ricerca">Ricerca Per:</label> 
                 <select id="Operatori" name="Operatori" style="height: 30px"> 
                     <option value="1">Nome</option> 
@@ -78,29 +72,62 @@
             <input type="text" class="ricerca" id="Ricerca" style="height: 25px" value placeholder="Inserisci testo...">
             <br><br>
             <input type="button" class="ricerca" id= "cerca" value="Cerca" style="height: 25px">
-    </div>
+        </div>
 
     <div class="vertical-divider">
-    <table>
+        <div class="table-container">
             <?php //stampa campi tabella inziali e dati rispettivi
                 echo "
-                <table>
+                <table id='tabella-operatori' style='display: none;'>
                     <tr>
                         <th class='nocontorno'></th>
                         <th>Nome</th>
                         <th>Cognome</th>
                         <th>Email</th>
                         <th>Telefono</th>
-                    </tr>;
+                    </tr>
                 <tr>
                     <td class='nocontorno'><input type='checkbox'></td>
                     <td>Mario</td>
                     <td>Rossi</td>
                     <td>01/01/1990</td>
                     <td>ABC123456789</td>
-                </tr>";
-                ?>
-        </table>
-    </div>
-</body>
+                </tr>
+                </table>
+                
+                <table id='tabella-cittadini' style='display: none;'>
+                <tr>
+                    <th class='nocontorno'></th>
+                    <th>a</th>
+                    <th>b</th>
+                    <th>b</th>
+                    <th>c</th>
+                </tr>
+        </div>
+    </div>";
+    ?>       
+    </body>
 </html>
+
+<script>
+            function VisualizzaUtenza() {
+            var selectBox = document.getElementById("utenza");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            if (selectedValue === "1") { //operatori
+                $response = file_get_contents("http://localhost/webservice/operatori/read.php");
+                $data = json_decode($response, true);
+
+                
+
+                document.getElementById("tabella-operatori").style.display = "block";
+                document.getElementById("tabella-cittadini").style.display = "none";
+            } else if (selectedValue === "2") { //cittadini
+                $response = file_get_contents("http://localhost/webservice/cittadini/read.php");
+                $data = json_decode($response, true);
+
+
+                document.getElementById("tabella-operatori").style.display = "none";
+                document.getElementById("tabella-cittadini").style.display = "block";
+            }
+        }
+</script>
