@@ -44,16 +44,23 @@ $operatori = new Operatori($db); 	// Passo la connessione alla classe operatori
 $data = json_decode(file_get_contents("php://input")); // Takes raw data from the request
 
 if(!empty($data->nome))
+{
+	$operatori->nome = $data->nome;	
 	$result = $operatori->search($data->nome);
-	echo $operatori->search($data->nome);
-	exit;
-	if($result === FALSE)
-	{
-		http_response_code(204);
-	}
-else
-	$result = $operatori->read(); // Ritorno l'elenco completo
-	
+}
+if(!empty($data->cognome))
+{
+	$operatori->cognome = $data->cognome;
+	$result = $operatori->search($data->cognome);
+}
+if($result === FALSE)
+{
+	http_response_code(204);
+}
+// else
+// 	$result = $operatori->read(); // Ritorno l'elenco completo
+
+
 if($result->num_rows == 0){
     http_response_code(204);	// No content
     $rspMsg = new Responsemessage("Nessun operatore trovato in progetto dell'anno", -1); 

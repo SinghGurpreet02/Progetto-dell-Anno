@@ -45,37 +45,29 @@ class Cittadini
 
     function search() // Parametri facoltativi da sanitizzare
 	{
-		// Primo parametro valore da ripulire, Secondo parametro connessione al DB, Terzo parametro per rimuovere TAG HTML
-		$this->nome = sanitize($this->nome, $this->connesione, true);
-		$this->cognome = sanitize($this->cognome, $this->connesione, true);
-		
-		$nome = '%'.$this->nome.'%';
-		$cognome = '%'.$this->cognome.'%';
+		$query = "";
 
-
-		if(!is_null($nome))
+		if(!is_null($this->nome))
 		{
+			$this->nome = sanitize($this->nome, $this->connesione, true);
+			$nome = '%'.$this->nome.'%';
 			
-			$query = "SELECT * FROM " . $this->nome_tabella . " AS a WHERE nome like ?;"; // select all
-
-			//$stmt->bind_param("ss", $nome, $cognome);
-			$stmt = $this->connesione->prepare($query);
-			$stmt->bind_param("s", $this->nome);
+			$query = "SELECT * FROM " . $this->nome_tabella . " WHERE nome LIKE '$nome'"; // Query di Selzione per nome
 		}
-		else if(!is_null($cognome))
+		// Primo parametro valore da ripulire, Secondo parametro connessione al DB, Terzo parametro per rimuovere TAG HTML
+		if(!is_null($this->cognome))
 		{
-			$query = "SELECT * FROM " . $this->nome_tabella . " AS a WHERE cognome like ?;"; // select all
+			$this->cognome = sanitize($this->cognome, $this->connesione, true);
+			$cognome = '%'.$this->cognome.'%';
 
-			//$stmt->bind_param("ss", $nome, $cognome);
-			$stmt = $this->connesione->prepare($query);
-			$stmt->bind_param("s", $this->cognome);
+			$query = "SELECT * FROM " . $this->nome_tabella . " WHERE cognome LIKE '$cognome'"; // Query di Selezione per cognome
 		}
 		
-
-		if ($stmt->execute() === TRUE){ 	// execute query
-			$res = $stmt->get_result(); // restituzione dei risultati
-			return $res;
-		}
+		$stmt = $this->connesione->prepare($query);
+		if ($stmt->execute() === TRUE) 	// execute query
+			{
+				return $res = $stmt->get_result(); // restituzione dei risultati
+			}
 		$stmt->close(); 	// chiude statement
 	}
 	// --- CREARE OGGETTO ---

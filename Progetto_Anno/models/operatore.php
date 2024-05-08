@@ -44,21 +44,29 @@ class Operatori
 
     function search() // Parametri facoltativi da sanitizzare
 	{
-		// Primo parametro valore da ripulire, Secondo parametro connessione al DB, Terzo parametro per rimuovere TAG HTML
-		$this->nome = sanitize($this->nome, $this->connesione, true);
-		$this->cognome = sanitize($this->cognome, $this->connesione, true);
-		$this->id_corpo = sanitize($this->id_corpo, $this->connesione, true);
-		
-		$nome = '%'.$this->nome.'%';
-		$cognome = '%'.$this->cognome.'%';
-		$id_corpo = '%'.$this->id_corpo.'%';
+		$query = "";
 
-		$query = "SELECT * FROM " . $this->nome_tabella . " AS a; "; // select all
+		if(!is_null($this->nome))
+		{
+			$this->nome = sanitize($this->nome, $this->connesione, true);
+			$nome = '%'.$this->nome.'%';
+			
+			$query = "SELECT * FROM " . $this->nome_tabella . " WHERE nome LIKE '$nome'"; // Query di Selzione per nome
+		}
+		// Primo parametro valore da ripulire, Secondo parametro connessione al DB, Terzo parametro per rimuovere TAG HTML
+		if(!is_null($this->cognome))
+		{
+			$this->cognome = sanitize($this->cognome, $this->connesione, true);
+			$cognome = '%'.$this->cognome.'%';
+
+			$query = "SELECT * FROM " . $this->nome_tabella . " WHERE cognome LIKE '$cognome'"; // Query di Selezione per cognome
+		}
 
 		$stmt = $this->connesione->prepare($query);
-		//$stmt->bind_param("sss", $isbn, $titolo, $autore);
 		if ($stmt->execute() === TRUE) 	// execute query
-			$res = $stmt->get_result(); // restituzione dei risultati
+			{
+				return $res = $stmt->get_result(); // restituzione dei risultati
+			}
 		$stmt->close(); 	// chiude statement
 	}
 	// --- CREARE OGGETTO ---

@@ -46,25 +46,25 @@ $data = json_decode(file_get_contents("php://input")); // Takes raw data from th
 $cittadini->nome = $data->nome;			// ATTENZIONE a maiuscole
 $cittadini->cognome = $data->cognome;
 
-if(!empty($data->nome)){
-
-	if($cittadini->search())
-	{
-		$result = $cittadini->search();
-		
-	}
-
-	if($result === FALSE)
-	{
-		http_response_code(204);
-	}
+if(!empty($data->nome))
+{
+	$cittadini->nome = $data->nome;	
+	$result = $cittadini->search($data->nome);
 }
-else
-	$result = $cittadini->read(); // Ritorno l'elenco completo
-	
+if(!empty($data->cognome))
+{
+	$cittadini->cognome = $data->cognome;
+	$result = $cittadini->search($data->cognome);
+}
+if($result === FALSE)
+{
+	http_response_code(204);
+}
+
+
 if($result->num_rows == 0){
     http_response_code(204);	// No content
-    $rspMsg = new Responsemessage("Nessun cittadini trovato in progetto dell'anno", -1); 
+    $rspMsg = new Responsemessage("Nessun cittadino trovato in progetto dell'anno", -1); 
 	echo json_encode($rspMsg); 	// in alternativa echo json_encode(array("message" => "Testo del messaggio"));
     exit;
 }
@@ -73,7 +73,7 @@ $items = array();
 
 while($obj = $result->fetch_object()) {
 	$item = array(
-		"ID_cittadino" => $obj->ID_cittadinos,
+		"ID_cittadino" => $obj->ID_cittadino,
 		"nome" => $obj->nome,
 		"cognome" => $obj->cognome,
 		"email" => $obj->email,
